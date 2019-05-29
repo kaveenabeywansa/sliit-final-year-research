@@ -1,0 +1,2 @@
+# files and folders to ignore in git commits
+node_modules/
