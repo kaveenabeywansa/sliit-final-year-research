@@ -67,10 +67,14 @@ var Controller = function () {
     // delete a user from the username
     this.deleteUser = function (id) {
         return new Promise(function (resolve, reject) {
-            UserSchema.deleteOne({ username: id }).then(function () {
-                resolve({ status: 200, message: "Deleted" });
+            UserSchema.deleteOne({ username: id }).then(function (data) {
+                if (data.deletedCount > 0) {
+                    resolve({ status: 200, message: "Deleted !" });
+                } else {
+                    reject({ status: 404, message: "No record found to delete" })
+                }
             }).catch(function (reason) {
-                reject({ status: 404, message: "ID not found: " + reason });
+                reject({ status: 404, message: "Error: " + reason });
             })
         })
     };
