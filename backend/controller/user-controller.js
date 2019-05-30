@@ -4,7 +4,8 @@ const UserSchema = mongoose.model('User');
 var Controller = function () {
     // adding new new to the system
     this.addUser = function (data) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(async function (resolve, reject) {
+            // defines the new user
             var User = UserSchema({
                 name: data.name,
                 username: data.username,
@@ -13,6 +14,16 @@ var Controller = function () {
                 usertype: data.usertype,
                 associates: data.associates
             });
+
+            // check if the selected username already exist
+            var value = await UserSchema.findOne({ username: data.username });
+            if (value) {
+                // username already exists... cancel user creation
+                reject({ status: 409, message: "Username already exists !" });
+                return;
+            }
+
+            // continue user creation if no issues
             User.save().then(function () {
                 resolve({ status: 200, message: "Successfully Added !" });
             }).catch(function (reason) {
@@ -86,6 +97,20 @@ var Controller = function () {
                 resolve({ status: 200, message: "Password Successfully Changed !" });
             }).catch(function (reason) {
                 reject({ status: 401, message: "User not found ! " });
+            })
+        })
+    };
+    // checks if username already exist while creating user from app
+    this.checkUsername = function (id) {
+        return new Promise(function (resolve, reject) {
+            UserSchema.findOne({ username: id }).exec().then(function (value) {
+                if (value) {
+                    reject({ status: 409, message: "Username taken !" });
+                } else {
+                    resolve({ status: 200, message: "Username available !" });
+                }
+            }).catch(function (reason) {
+                reject({ status: 404, message: "ID not found: " + reason });
             })
         })
     };
