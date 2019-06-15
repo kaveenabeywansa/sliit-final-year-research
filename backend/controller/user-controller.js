@@ -1,5 +1,6 @@
 const mongoose = require('../dbschema/dbconfig');
 const UserSchema = mongoose.model('User');
+const StatsSchema = mongoose.model('RealTimeStats');
 
 var Controller = function () {
     // adding new new to the system
@@ -12,7 +13,20 @@ var Controller = function () {
                 password: data.password,
                 phone: data.phone,
                 usertype: data.usertype,
-                associates: data.associates
+                associates: data.associates,
+            });
+
+            var Stat = StatsSchema({
+                username: data.username,
+                statistics: {
+                    date: null,
+                    time: null,
+                    bpm: null,
+                    location: {
+                        latitude: null,
+                        longitude: null
+                    }
+                }
             });
 
             // check if the selected username already exist
@@ -25,6 +39,7 @@ var Controller = function () {
 
             // continue user creation if no issues
             User.save().then(function () {
+                Stat.save();
                 resolve({ status: 200, message: "Successfully Added !" });
             }).catch(function (reason) {
                 reject({ status: 404, message: "Error: " + reason });

@@ -10,10 +10,25 @@ const User = new Schema({
     usertype: String,
     associates: [{
         type: String
+    }],
+});
+
+// realtime details
+const RealTimeStats = new Schema({
+    username: String,
+    statistics: [{
+        date: String,
+        time: String,
+        bpm: Number,
+        location: {
+            latitude: Number,
+            longitude: Number
+        }
     }]
 });
 
 mongoose.model('User', User);
+mongoose.model('RealTimeStats', RealTimeStats);
 
 mongoose.connect('mongodb://localhost:27017/smartheadset', { useNewUrlParser: true }, function (err) {
     if (err) {
