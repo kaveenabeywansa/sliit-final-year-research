@@ -98,12 +98,13 @@ var Controller = function () {
         return new Promise(function (resolve, reject) {
             UserSchema.findOne({ username: data.username }).exec().then(function (value) {
                 if (value.password == data.password) {
-                    resolve({ status: 200, message: "Welcome " + value.name, logged: true });
+                    var logObj = { status: true, userType: value.usertype, userName: value.name };
+                    resolve({ status: 200, message: "Welcome " + value.name, logged: logObj });
                 } else {
-                    reject({ status: 401, message: "Incorrect Password !", logged: false });
+                    reject({ status: 401, message: "Incorrect Password !", logged: { status: false } });
                 }
             }).catch(function (reason) {
-                reject({ status: 401, message: "User not found ! ", logged: false });
+                reject({ status: 401, message: "User not found ! ", logged: { status: false } });
             })
         })
     };
