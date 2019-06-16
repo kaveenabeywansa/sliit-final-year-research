@@ -1,6 +1,9 @@
 package com.stark.smartwearableheadset;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.stark.smartwearableheadset.models.LoginCredentials;
+import com.stark.smartwearableheadset.services.BackgroundService;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.UserService;
 
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getUserPermissions();
 
         // init
         userService = RetrofitClient.getClient().create(UserService.class);
@@ -50,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
                 goToSignUp();
             }
         });
+    }
+
+    // user permissions
+    private void getUserPermissions() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
     // validate user and make a login request
@@ -109,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("Test", UserType);
                         Log.i("Test", UserName);
 
+                        // store user details in sessions
+                        SharedPreferences preferences;
+                        preferences = getSharedPreferences("user_details", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("user_name", UserName);
+                        editor.putString("user_type", UserType);
+                        editor.putString("username", username);
+//                        editor.commit();
+                        editor.apply();
 
                         // check user type and redirect accordingly
                         if (UserType.equals("blind")) {
@@ -127,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call call, Throwable t) {
-
+                Log.i("Error", t.getMessage());
+                Toast.makeText(MainActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
             }
         });
     }
