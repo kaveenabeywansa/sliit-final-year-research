@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/img_signup"
+        android:id="@+id/img_login"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="50dp"
@@ -55,7 +55,7 @@
         android:textColor="@color/white" />
 
     <Button
-        android:id="@+id/btn_home"
+        android:id="@+id/btn_signup"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical|center_horizontal"
