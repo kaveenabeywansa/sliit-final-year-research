@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".BlindUserList">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:text="Select a User to Monitor"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/img_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="No Data Found Error"
+        android:src="@drawable/not_found"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="An Error Occurred"
+        android:src="@drawable/error_occurred"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/blind_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

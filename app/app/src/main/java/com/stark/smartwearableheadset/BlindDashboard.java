@@ -23,10 +23,10 @@ import com.stark.smartwearableheadset.services.BackgroundService;
 
 public class BlindDashboard extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
-    Button button;
-    TextView textView;
-    LocationManager locationManager;
-    String lattitude, longitude;
+    private Button button;
+    private TextView textView;
+    private LocationManager locationManager;
+    private String lattitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

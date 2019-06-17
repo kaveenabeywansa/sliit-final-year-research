@@ -11,10 +11,29 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <Button
+            android:id="@+id/btn_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Associate Dashboard" />
+            android:text="Edit Profile" />
+
+        <Button
+            android:id="@+id/btn_change_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Password" />
+
+        <Button
+            android:id="@+id/btn_monitor_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monitor Users" />
+
+        <Button
+            android:id="@+id/btn_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out" />
 
     </LinearLayout>
 
