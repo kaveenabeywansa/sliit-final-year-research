@@ -134,6 +134,20 @@ var Controller = function () {
             })
         })
     };
+    // gets a list of blind users connected with the given associate
+    this.getBlindListForAssociate = function (id) {
+        return new Promise(function (resolve, reject) {
+            UserSchema.find({ associates: { $all: [id] } }).exec().then(function (value) {
+                if (value.length > 0) {
+                    resolve({ status: 200, userdata: value });
+                } else {
+                    reject({ status: 404, message: "No users found" });
+                }
+            }).catch(function (reason) {
+                reject({ status: 404, message: "Error: " + reason });
+            })
+        })
+    };
 };
 
 module.exports = new Controller();

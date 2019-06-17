@@ -66,5 +66,13 @@ router.get('/checkuname/:id', function (req, res) {
         res.status(reason.status).send({ message: reason.message });
     })
 });
+// get a list of blind users for the associate
+router.get('/blindlist/:id', function (req, res) {
+    Controller.getBlindListForAssociate(req.params.id).then(function (data) {
+        res.status(data.status).send(data.userdata);
+    }).catch(function (reason) {
+        res.status(reason.status).send({ message: reason.message });
+    })
+});
 
 module.exports = router;
