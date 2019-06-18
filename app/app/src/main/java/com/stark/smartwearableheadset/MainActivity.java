@@ -3,7 +3,9 @@ package com.stark.smartwearableheadset;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
     // user permissions
     private void getUserPermissions() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE}, 1);
+        String[] androidPermissionsSet = {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CALL_PHONE,
+        };
+        ActivityCompat.requestPermissions(this, androidPermissionsSet, 1);
     }
 
     // validate user and make a login request

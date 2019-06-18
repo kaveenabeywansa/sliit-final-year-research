@@ -185,7 +185,7 @@ public class BackgroundService extends Service {
     // get the user's heart rate from the raspberry pi // current is a dummy random bpm
     public int getBPM() {
         Random r = new Random();
-        int low = 60;
+        int low = 40;
         int high = 120;
         int result = r.nextInt(high - low) + low;
         return result;
@@ -199,7 +199,7 @@ public class BackgroundService extends Service {
 
     public String getTime() {
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("HH-mm-ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         return (formatter.format(date));
     }
 

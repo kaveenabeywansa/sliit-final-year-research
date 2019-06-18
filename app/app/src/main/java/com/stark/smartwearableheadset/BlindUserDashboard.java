@@ -1,7 +1,10 @@
 package com.stark.smartwearableheadset;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +26,7 @@ public class BlindUserDashboard extends AppCompatActivity {
     SharedPreferences preferences;
     private TextView txt_user_name, txt_user_phone;
     private Button btn_track_location, btn_track_health, btn_location_history, btn_health_history, btn_return;
+    private String blind_username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,12 @@ public class BlindUserDashboard extends AppCompatActivity {
                 goToPrevious();
             }
         });
+        txt_user_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                triggerCallUserInternt();
+            }
+        });
 
         loadProfile();
     }
@@ -81,6 +91,9 @@ public class BlindUserDashboard extends AppCompatActivity {
 
     // open selected user's real-time health
     private void trackHealth() {
+        Intent intent = new Intent(BlindUserDashboard.this, TrackHealth.class);
+        intent.putExtra("blind_user_id", blind_username);
+        startActivity(intent);
     }
 
     // open selected user's location history
@@ -106,6 +119,7 @@ public class BlindUserDashboard extends AppCompatActivity {
                 BlindUser blindUser = (BlindUser) response.body();
                 txt_user_name.setText(blindUser.getName());
                 txt_user_phone.setText(blindUser.getPhone());
+                blind_username = blindUser.getUsername();
             }
 
             @Override
@@ -115,5 +129,32 @@ public class BlindUserDashboard extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void triggerCallUserInternt() {
+        final String phone_number = txt_user_phone.getText().toString();
+        String user_name = txt_user_name.getText().toString();
+        // show confirm dialog box to confirm user's action
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Confirm your action !");
+        builder.setMessage("Do you want to call " + user_name + " on " + phone_number + "?");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // user confirms action. open caller intent
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + phone_number));
+                        startActivity(callIntent);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
