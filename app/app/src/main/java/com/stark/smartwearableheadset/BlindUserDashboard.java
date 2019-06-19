@@ -87,6 +87,9 @@ public class BlindUserDashboard extends AppCompatActivity {
 
     // open selected user's real-time location
     private void trackLocation() {
+        Intent intent = new Intent(BlindUserDashboard.this, TrackLocation.class);
+        intent.putExtra("blind_user_id", blind_username);
+        startActivity(intent);
     }
 
     // open selected user's real-time health

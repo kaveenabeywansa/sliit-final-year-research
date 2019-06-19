@@ -70,7 +70,7 @@ public class TrackHealth extends AppCompatActivity {
                     try {
                         Log.i("Test", "Fetching Latest BPM...");
                         fetchLatestBPM();
-                        Thread.sleep(5000);
+                        Thread.sleep(2500);
                     } catch (Exception e) {
                         Log.e("Error", e.getMessage());
                     }

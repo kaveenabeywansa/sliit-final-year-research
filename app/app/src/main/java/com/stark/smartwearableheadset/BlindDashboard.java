@@ -23,7 +23,7 @@ import com.stark.smartwearableheadset.services.BackgroundService;
 
 public class BlindDashboard extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
-    private Button button;
+    private Button button, btn_signout;
     private TextView textView;
     private LocationManager locationManager;
     private String lattitude, longitude;
@@ -50,6 +50,7 @@ public class BlindDashboard extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.text_location);
         button = (Button) findViewById(R.id.button_location);
+        btn_signout = (Button) findViewById(R.id.btn_sign_out);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,18 @@ public class BlindDashboard extends AppCompatActivity {
                 buttonClick();
             }
         });
+        btn_signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUserOut();
+            }
+        });
+    }
+
+    private void signUserOut() {
+        Intent intent = new Intent(BlindDashboard.this, BackgroundService.class);
+        stopService(intent);
+        finish();
     }
 
     private void buttonClick() {

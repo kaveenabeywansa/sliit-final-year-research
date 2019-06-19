@@ -42,35 +42,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Track Location" />
+            android:background="@color/blue"
+            android:text="Track Location"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_track_health"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Track Health" />
+            android:background="@color/blue"
+            android:text="Track Health"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_location_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Location History" />
+            android:background="@color/blue"
+            android:text="Location History"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_health_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Health History" />
+            android:background="@color/blue"
+            android:text="Health History"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_return"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Return" />
+            android:background="@color/red"
+            android:text="Return"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

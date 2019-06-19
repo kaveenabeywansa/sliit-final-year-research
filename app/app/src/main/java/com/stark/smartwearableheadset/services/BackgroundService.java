@@ -38,6 +38,7 @@ public class BackgroundService extends Service {
     StatsService statsService;
     LocationManager locationManager;
     SharedPreferences preferences;
+    private boolean transmitterLoop;
 
     @Nullable
     @Override
@@ -53,6 +54,7 @@ public class BackgroundService extends Service {
         Context context = getApplicationContext();
         preferences = getSharedPreferences("user_details", MODE_PRIVATE);
         statsService = RetrofitClient.getClient().create(StatsService.class);
+        transmitterLoop = true;
 
         // avoid the service from stopping when the screen is off
 //        PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
@@ -60,7 +62,8 @@ public class BackgroundService extends Service {
 //        wakeLock.acquire();
 //        wakeLock.release();
 
-        transmitDataBundle();
+        // start the transmission thread
+        startTransmitterThread();
 
         return START_STICKY;
     }
@@ -68,7 +71,27 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        transmitterLoop = false;
         Log.i("Service", "Service Stopped !");
+    }
+
+    private void startTransmitterThread() {
+        Thread fetchLatestLocationThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                while (transmitterLoop) {
+                    try {
+                        Log.i("Test", "Transmitting data to server...");
+                        transmitDataBundle();
+                        Thread.sleep(5000);
+                    } catch (Exception e) {
+                        Log.e("Error", e.getMessage());
+                    }
+                }
+            }
+        };
+        fetchLatestLocationThread.start();
     }
 
     // build a bundle and send to the server
