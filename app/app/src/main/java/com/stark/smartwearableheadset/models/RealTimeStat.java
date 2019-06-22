@@ -57,6 +57,6 @@ public class RealTimeStat {
     }
 
     public boolean isValidObject() {
-        return (username != null && date != null && time != null && bpm > 0);
+        return (username != null && date != null && time != null && bpm >= 0);
     }
 }

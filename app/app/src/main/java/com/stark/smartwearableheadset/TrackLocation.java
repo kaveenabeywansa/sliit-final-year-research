@@ -30,8 +30,9 @@ import retrofit2.Response;
 public class TrackLocation extends FragmentActivity implements OnMapReadyCallback {
     private StatsService statsService;
     private boolean fetchingLocLoop;
-    GoogleMap googleMap;
-    Marker map_marker;
+    private GoogleMap googleMap;
+    private Marker map_marker;
+    LatLng markerPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
         // init
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        markerPosition = new LatLng(-1, -1);
         statsService = RetrofitClient.getClient().create(StatsService.class);
         fetchingLocLoop = true;
 
@@ -63,8 +65,8 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
-        map_marker = map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("User"));
-        fetchLatestLocation(true);
+        map_marker = map.addMarker(new MarkerOptions().position(markerPosition).title("Fetching location..."));
+        fetchLatestLocation();
     }
 
     // start the fetching loop for BPM
@@ -76,7 +78,7 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
                 while (fetchingLocLoop) {
                     try {
                         Log.i("Test", "Fetching Latest Location...");
-                        fetchLatestLocation(false);
+                        fetchLatestLocation();
                         Thread.sleep(5000);
                     } catch (Exception e) {
                         Log.e("Error", e.getMessage());
@@ -88,7 +90,7 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
     }
 
     // get the most recent update on location
-    private void fetchLatestLocation(final boolean zoomToMarker) {
+    private void fetchLatestLocation() {
         String username = getIntent().getStringExtra("blind_user_id");
         Call call = statsService.getLatestStats(username);
         call.enqueue(new Callback() {
@@ -99,21 +101,26 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
                     if (response.isSuccessful()) {
                         responseBody = (ResponseBody) response.body();
 
+                        boolean zoomToPointer = true;
+
                         // checking response to check if credentials were valid
                         JSONObject jsonObject = new JSONObject(responseBody.string());
                         JSONObject locationObj = (jsonObject.getJSONObject("location"));
                         double lati = locationObj.getDouble("latitude");
                         double longi = locationObj.getDouble("longitude");
-                        LatLng markerPosition = new LatLng(lati, longi);
+                        if (markerPosition.latitude == lati && markerPosition.longitude == longi) {
+                            zoomToPointer = false;
+                        }
+                        markerPosition = new LatLng(lati, longi);
                         map_marker.setPosition(markerPosition);
                         map_marker.setTitle("Location @ " + jsonObject.getString("date") + "-" + jsonObject.getString("time"));
 
-                        if (zoomToMarker) {
+                        if (zoomToPointer) {
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 15));
                         }
                     } else {
 //                        responseBody = response.errorBody();
-                        Toast.makeText(TrackLocation.this, "An error occurred !", Toast.LENGTH_SHORT);
+                        Toast.makeText(TrackLocation.this, "An error occurred !", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     Log.e("error", e.toString());

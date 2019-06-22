@@ -66,9 +66,14 @@ public class BlindDashboard extends AppCompatActivity {
         });
     }
 
-    private void signUserOut() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         Intent intent = new Intent(BlindDashboard.this, BackgroundService.class);
         stopService(intent);
+    }
+
+    private void signUserOut() {
         finish();
     }
 

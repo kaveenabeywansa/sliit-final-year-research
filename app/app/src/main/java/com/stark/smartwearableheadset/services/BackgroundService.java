@@ -39,6 +39,7 @@ public class BackgroundService extends Service {
     LocationManager locationManager;
     SharedPreferences preferences;
     private boolean transmitterLoop;
+    private BluetoothService bluetoothService;
 
     @Nullable
     @Override
@@ -52,6 +53,7 @@ public class BackgroundService extends Service {
 
         // init
         Context context = getApplicationContext();
+        bluetoothService = new BluetoothService();
         preferences = getSharedPreferences("user_details", MODE_PRIVATE);
         statsService = RetrofitClient.getClient().create(StatsService.class);
         transmitterLoop = true;
@@ -84,7 +86,7 @@ public class BackgroundService extends Service {
                     try {
                         Log.i("Test", "Transmitting data to server...");
                         transmitDataBundle();
-                        Thread.sleep(5000);
+                        Thread.sleep(2500);
                     } catch (Exception e) {
                         Log.e("Error", e.getMessage());
                     }
@@ -207,11 +209,16 @@ public class BackgroundService extends Service {
 
     // get the user's heart rate from the raspberry pi // current is a dummy random bpm
     public int getBPM() {
-        Random r = new Random();
-        int low = 40;
-        int high = 120;
-        int result = r.nextInt(high - low) + low;
-        return result;
+        String output_bpm = bluetoothService.readBPM();
+        if (!output_bpm.equals("null")) {
+            return (Integer.parseInt(output_bpm));
+        }
+
+//        Random r = new Random();
+//        int low = 40;
+//        int high = 120;
+//        int result = r.nextInt(high - low) + low;
+        return 0;
     }
 
     public String getDate() {
