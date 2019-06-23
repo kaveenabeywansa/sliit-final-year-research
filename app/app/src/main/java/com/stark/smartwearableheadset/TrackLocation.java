@@ -46,6 +46,13 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
         statsService = RetrofitClient.getClient().create(StatsService.class);
         fetchingLocLoop = true;
 
+        findViewById(R.id.fab_re_center_map).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                centerMapMarker();
+            }
+        });
+
         // start the thread to fetch real-time location
         startFetchingThread();
     }
@@ -134,5 +141,10 @@ public class TrackLocation extends FragmentActivity implements OnMapReadyCallbac
                 Toast.makeText(TrackLocation.this, "An error occurred", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // center the map marker
+    private void centerMapMarker() {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 15));
     }
 }
