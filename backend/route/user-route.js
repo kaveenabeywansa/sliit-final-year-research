@@ -74,5 +74,21 @@ router.get('/blindlist/:id', function (req, res) {
         res.status(reason.status).send({ message: reason.message });
     })
 });
+// get a list of all from the selected user type
+router.get('/usertype/:id', function (req, res) {
+    Controller.getAllOfUserType(req.params.id).then(function (data) {
+        res.status(data.status).send(data.userdata);
+    }).catch(function (reason) {
+        res.status(reason.status).send({ message: reason.message });
+    })
+});
+// get associate list for given keyword
+router.get('/searchassociate/:id', function (req, res) {
+    Controller.getAssociatesForKeyword(req.params.id).then(function (data) {
+        res.status(data.status).send(data.userdata);
+    }).catch(function (reason) {
+        res.status(reason.status).send({ message: reason.message });
+    })
+});
 
 module.exports = router;

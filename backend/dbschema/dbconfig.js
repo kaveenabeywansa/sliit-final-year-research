@@ -7,7 +7,7 @@ const User = new Schema({
     username: String,
     password: String,
     phone: String,
-    usertype: String,
+    usertype: String, // blind or associate
     associates: [{
         type: String
     }],

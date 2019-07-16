@@ -148,6 +148,44 @@ var Controller = function () {
             })
         })
     };
+    // gets a list of requested user type
+    this.getAllOfUserType = function (id) {
+        return new Promise(function (resolve, reject) {
+            UserSchema.find({ usertype: id }).exec().then(function (value) {
+                if (value.length > 0) {
+                    // convert the object to json and remove the password
+                    value = JSON.parse(JSON.stringify(value));
+                    for (let index = 0; index < value.length; index++) {
+                        delete value[index].password;
+                    }
+                    resolve({ status: 200, userdata: value });
+                } else {
+                    reject({ status: 404, message: "No users found" });
+                }
+            }).catch(function (reason) {
+                reject({ status: 404, message: "Error: " + reason });
+            })
+        })
+    };
+    // gets a list of associate for given keyword match
+    this.getAssociatesForKeyword = function (id) {
+        return new Promise(function (resolve, reject) {
+            UserSchema.find({ usertype: "associate", name: { $regex: new RegExp(id, "i") } }).exec().then(function (value) {
+                if (value.length > 0) {
+                    // convert the object to json and remove the password
+                    value = JSON.parse(JSON.stringify(value));
+                    for (let index = 0; index < value.length; index++) {
+                        delete value[index].password;
+                    }
+                    resolve({ status: 200, userdata: value });
+                } else {
+                    reject({ status: 404, message: "No users found" });
+                }
+            }).catch(function (reason) {
+                reject({ status: 404, message: "Error: " + reason });
+            })
+        })
+    };
 };
 
 module.exports = new Controller();
