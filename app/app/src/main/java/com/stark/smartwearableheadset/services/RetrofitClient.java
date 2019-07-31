@@ -8,8 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static Retrofit retrofit = null;
     //    private static String baseUrl = "http://35.241.218.202/"; // cloud hosted ip
-        private static String baseUrl = "http://192.168.43.167/"; // testing at mobile
-//    private static String baseUrl = "http://192.168.1.100/"; // testing at home
+//        private static String baseUrl = "http://192.168.43.223/"; // testing at mobile
+    private static String baseUrl = "http://192.168.1.103/"; // testing at home
 
     public static Retrofit getClient() {
         if (retrofit == null) {

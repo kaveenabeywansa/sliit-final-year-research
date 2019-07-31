@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
     // redirect to sign up activity
     private void goToSignUp() {
+        Intent intent = new Intent(this, SignUp.class);
+        startActivity(intent);
     }
 
     // validate if credentials are entered

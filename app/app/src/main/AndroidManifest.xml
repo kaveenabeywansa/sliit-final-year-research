@@ -25,7 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TrackLocation"></activity>
+        <activity android:name=".Signup2"></activity>
+        <activity android:name=".SignUp" />
+        <activity android:name=".TrackLocation" />
         <activity android:name=".TrackHealth" />
         <activity android:name=".BlindUserDashboard" />
         <activity android:name=".BlindUserList" />

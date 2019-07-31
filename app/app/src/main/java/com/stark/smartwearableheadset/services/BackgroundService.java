@@ -58,11 +58,11 @@ public class BackgroundService extends Service {
         statsService = RetrofitClient.getClient().create(StatsService.class);
         transmitterLoop = true;
 
-        // avoid the service from stopping when the screen is off
-//        PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
-//        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SmartHeadset:keepawake");
-//        wakeLock.acquire();
-//        wakeLock.release();
+//         avoid the service from stopping when the screen is off
+        PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SmartHeadset:keepawake");
+        wakeLock.acquire();
+        wakeLock.release();
 
         // start the transmission thread
         startTransmitterThread();

@@ -2,6 +2,7 @@ package com.stark.smartwearableheadset.services;
 
 import com.stark.smartwearableheadset.models.BlindUser;
 import com.stark.smartwearableheadset.models.LoginCredentials;
+import com.stark.smartwearableheadset.models.User;
 
 import java.util.List;
 
@@ -21,4 +22,10 @@ public interface UserService {
 
     @GET("users/{id}/")
     Call<BlindUser> getBlindUserDetails(@Path("id") String username);
+
+    @GET("users/usertype/associate")
+    Call<List<User>> getAssociateSearchList();
+
+    @GET("users/searchassociate/{id}")
+    Call<List<User>> getAssociateSearchList(@Path("id") String keyword);
 }
