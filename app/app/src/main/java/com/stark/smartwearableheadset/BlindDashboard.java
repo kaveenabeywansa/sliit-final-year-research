@@ -44,9 +44,9 @@ public class BlindDashboard extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
 //        // background service // move this to dashboard later
-//        BackgroundService backgroundService = new BackgroundService();
-//        Intent intent = new Intent(getApplicationContext(), backgroundService.getClass());
-//        startService(intent);
+        BackgroundService backgroundService = new BackgroundService();
+        Intent intent = new Intent(getApplicationContext(), backgroundService.getClass());
+        startService(intent);
 
         textView = (TextView) findViewById(R.id.text_location);
         button = (Button) findViewById(R.id.button_location);
