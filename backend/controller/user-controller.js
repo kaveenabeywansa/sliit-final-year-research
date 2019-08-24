@@ -40,7 +40,7 @@ var Controller = function () {
             // continue user creation if no issues
             User.save().then(function () {
                 Stat.save();
-                resolve({ status: 200, message: "Successfully Added !" });
+                resolve({ status: 200, message: "User Created Successfully !" });
             }).catch(function (reason) {
                 reject({ status: 404, message: "Error: " + reason });
             })
