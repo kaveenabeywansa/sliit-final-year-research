@@ -6,6 +6,7 @@ import com.stark.smartwearableheadset.models.User;
 
 import java.util.List;
 
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,4 +29,7 @@ public interface UserService {
 
     @GET("users/searchassociate/{id}")
     Call<List<User>> getAssociateSearchList(@Path("id") String keyword);
+
+    @POST("users/")
+    Call<ResponseBody> registerNewUser(@Body User user);
 }

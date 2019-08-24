@@ -21,22 +21,27 @@ import com.stark.smartwearableheadset.models.User;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.UserService;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUp extends AppCompatActivity {
-    private ListView user_data;
-    private List<User> user_list;
+//    private ListView user_data;
+//    private List<User> user_list;
     private UserService userService;
     private Button btn_signup;
-    private Button btn_search;
+//    private Button btn_search;
     private Button btn_nextpage;
     private Button btn_type_blind;
     private Button btn_type_associate;
-    private EditText txt_search_keywords;
+//    private EditText txt_search_keywords;
+    private EditText txt_fullName, txt_phoneNumb, txt_username, txt_password, txt_confirmpwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +50,20 @@ public class SignUp extends AppCompatActivity {
 
         // init
         userService = RetrofitClient.getClient().create(UserService.class);
-        user_data = (ListView) findViewById(R.id.associate_search_list);
+//        user_data = (ListView) findViewById(R.id.associate_search_list);
         btn_signup = (Button) findViewById(R.id.btn_signup);
-        btn_search = (Button) findViewById(R.id.btn_search);
+//        btn_search = (Button) findViewById(R.id.btn_search);
         btn_nextpage = (Button) findViewById(R.id.btn_nextpage);
         btn_type_blind = (Button) findViewById(R.id.btn_usertype_blind);
         btn_type_associate = (Button) findViewById(R.id.btn_usertype_associate);
-        txt_search_keywords = (EditText) findViewById(R.id.txt_search_associates);
+
+        txt_fullName = (EditText) findViewById(R.id.txt_full_name);
+        txt_phoneNumb = (EditText) findViewById(R.id.txt_phone);
+        txt_username = (EditText) findViewById(R.id.txt_username);
+        txt_password = (EditText) findViewById(R.id.txt_password);
+        txt_confirmpwd = (EditText) findViewById(R.id.txt_confirm_password);
+
+//        txt_search_keywords = (EditText) findViewById(R.id.txt_search_associates);
 
 //        user_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -75,7 +87,7 @@ public class SignUp extends AppCompatActivity {
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SignUp.this, "Not Implemented !", Toast.LENGTH_SHORT).show();
+                SignUpKnownAssociate();
             }
         });
 
@@ -138,6 +150,53 @@ public class SignUp extends AppCompatActivity {
 
             btn_nextpage.setVisibility(View.GONE);
             btn_signup.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void SignUpKnownAssociate() {
+        String fName = txt_fullName.getText().toString();
+        String phone = txt_phoneNumb.getText().toString();
+        String username = txt_username.getText().toString();
+        String password = txt_password.getText().toString();
+        String confirmPwd = txt_confirmpwd.getText().toString();
+
+        if (fName.length()>0 && phone.length()>0 && username.length()>0 && password.length()>0) {
+            if(!password.equals(confirmPwd)){
+                Toast.makeText(SignUp.this, "Passwords do not match !", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            User associateUser = new User(fName,username,password,phone,"associate",null);
+            Call call = userService.registerNewUser(associateUser);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    try {
+                        ResponseBody responseBody;
+                        if (response.isSuccessful()) {
+                            responseBody = (ResponseBody) response.body();
+                        } else {
+                            responseBody = (ResponseBody) response.errorBody();
+                        }
+
+                        JSONObject jsonObject = new JSONObject(responseBody.string());
+                        String responseMessage = jsonObject.getString("message");
+                        // display the server's response
+                        Toast.makeText(SignUp.this, responseMessage, Toast.LENGTH_SHORT).show();
+                        finish();
+                    } catch (Exception e) {
+                        Log.e("error", e.toString());
+                        Toast.makeText(SignUp.this, "An error occurred !", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.i("Error", t.getMessage());
+                    Toast.makeText(SignUp.this, "An error occurred", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(SignUp.this, "Please fill in all fields !", Toast.LENGTH_SHORT).show();
         }
     }
 
