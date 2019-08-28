@@ -18,9 +18,12 @@ import com.stark.smartwearableheadset.models.User;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.UserService;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +39,9 @@ public class Signup2 extends AppCompatActivity {
     private Button btn_search;
     private EditText txt_search_keywords;
 
+    private User blindUser;
+    private Button btn_signup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,7 @@ public class Signup2 extends AppCompatActivity {
         selected_users.setAdapter(new AssociateListAdapter(getApplicationContext(), selected_list));
         btn_search = (Button) findViewById(R.id.btn_search);
         txt_search_keywords = (EditText) findViewById(R.id.txt_search_associates);
+        btn_signup = (Button) findViewById(R.id.btn_signup);
 
         user_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,6 +74,13 @@ public class Signup2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 searchAssociates();
+            }
+        });
+
+        btn_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerBlindUser();
             }
         });
     }
@@ -156,5 +170,56 @@ public class Signup2 extends AppCompatActivity {
             findViewById(R.id.associate_search_list).setVisibility(View.VISIBLE);
             findViewById(R.id.txt_no_data_error).setVisibility(View.GONE);
         }
+    }
+
+    // creates a new blind user account
+    private void registerBlindUser() {
+        if (!(selected_list.size() > 0)) {
+            Toast.makeText(this, "Please select atleast one known associate !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String fName = getIntent().getStringExtra("fName");
+        String phone = getIntent().getStringExtra("phone");
+        String username = getIntent().getStringExtra("username");
+        String password = getIntent().getStringExtra("password");
+        String associateList[] = new String[selected_list.size()];
+        for (int i = 0; i< selected_list.size(); i++) {
+            associateList[i] = selected_list.get(i).getUsername();
+        }
+
+        User associateUser = new User(fName,username,password,phone,"blind",associateList);
+        Call call = userService.registerNewUser(associateUser);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                try {
+                    ResponseBody responseBody;
+                    if (response.isSuccessful()) {
+                        responseBody = (ResponseBody) response.body();
+                    } else {
+                        responseBody = (ResponseBody) response.errorBody();
+                    }
+
+                    JSONObject jsonObject = new JSONObject(responseBody.string());
+                    String responseMessage = jsonObject.getString("message");
+                    // display the server's response
+                    Toast.makeText(Signup2.this, responseMessage, Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    Log.e("error", e.toString());
+                    Toast.makeText(Signup2.this, "An error occurred !", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.i("Error", t.getMessage());
+                Toast.makeText(Signup2.this, "An error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

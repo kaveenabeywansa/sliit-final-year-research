@@ -80,8 +80,7 @@ public class SignUp extends AppCompatActivity {
         btn_nextpage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Signup2.class);
-                startActivity(intent);
+                goToNextPage();
             }
         });
         btn_signup.setOnClickListener(new View.OnClickListener() {
@@ -197,6 +196,28 @@ public class SignUp extends AppCompatActivity {
             });
         } else {
             Toast.makeText(SignUp.this, "Please fill in all fields !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void goToNextPage() {
+        String fName = txt_fullName.getText().toString();
+        String phone = txt_phoneNumb.getText().toString();
+        String username = txt_username.getText().toString();
+        String password = txt_password.getText().toString();
+        String confirmPwd = txt_confirmpwd.getText().toString();
+
+        if (fName.length()>0 && phone.length()>0 && username.length()>0 && password.length()>0) {
+            if (!password.equals(confirmPwd)) {
+                Toast.makeText(SignUp.this, "Passwords do not match !", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Intent intent = new Intent(getApplicationContext(), Signup2.class);
+            intent.putExtra("fName", fName);
+            intent.putExtra("phone", phone);
+            intent.putExtra("username",username);
+            intent.putExtra("password", password);
+            startActivity(intent);
         }
     }
 

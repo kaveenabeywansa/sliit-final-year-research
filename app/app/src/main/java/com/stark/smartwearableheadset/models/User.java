@@ -5,15 +5,15 @@ public class User {
     String username;
     String password;
     String phone;
-    String userType;
+    String usertype;
     String associates[];
 
-    public User(String name, String username, String password, String phone, String userType, String[] associates) {
+    public User(String name, String username, String password, String phone, String usertype, String[] associates) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.phone = phone;
-        this.userType = userType;
+        this.usertype = usertype;
         this.associates = associates;
     }
 
@@ -50,11 +50,11 @@ public class User {
     }
 
     public String getUserType() {
-        return userType;
+        return usertype;
     }
 
     public void setUserType(String userType) {
-        this.userType = userType;
+        this.usertype = userType;
     }
 
     public String[] getAssociates() {
