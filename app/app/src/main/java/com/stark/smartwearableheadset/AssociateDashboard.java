@@ -55,6 +55,8 @@ public class AssociateDashboard extends AppCompatActivity {
 
     // edit profile
     private void editProfileClicked() {
+        Intent intent = new Intent( AssociateDashboard.this, EditProfile.class);
+        startActivity(intent);
     }
 
     // chaange user password
