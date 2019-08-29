@@ -184,11 +184,11 @@ public class Signup2 extends AppCompatActivity {
         String username = getIntent().getStringExtra("username");
         String password = getIntent().getStringExtra("password");
         String associateList[] = new String[selected_list.size()];
-        for (int i = 0; i< selected_list.size(); i++) {
+        for (int i = 0; i < selected_list.size(); i++) {
             associateList[i] = selected_list.get(i).getUsername();
         }
 
-        User associateUser = new User(fName,username,password,phone,"blind",associateList);
+        User associateUser = new User(fName, username, password, phone, "blind", associateList);
         Call call = userService.registerNewUser(associateUser);
         call.enqueue(new Callback() {
             @Override
@@ -197,6 +197,10 @@ public class Signup2 extends AppCompatActivity {
                     ResponseBody responseBody;
                     if (response.isSuccessful()) {
                         responseBody = (ResponseBody) response.body();
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     } else {
                         responseBody = (ResponseBody) response.errorBody();
                     }
@@ -205,16 +209,12 @@ public class Signup2 extends AppCompatActivity {
                     String responseMessage = jsonObject.getString("message");
                     // display the server's response
                     Toast.makeText(Signup2.this, responseMessage, Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-
                 } catch (Exception e) {
                     Log.e("error", e.toString());
                     Toast.makeText(Signup2.this, "An error occurred !", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call call, Throwable t) {
                 Log.i("Error", t.getMessage());

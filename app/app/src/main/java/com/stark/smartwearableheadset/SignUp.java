@@ -174,6 +174,10 @@ public class SignUp extends AppCompatActivity {
                         ResponseBody responseBody;
                         if (response.isSuccessful()) {
                             responseBody = (ResponseBody) response.body();
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
                         } else {
                             responseBody = (ResponseBody) response.errorBody();
                         }
@@ -182,7 +186,6 @@ public class SignUp extends AppCompatActivity {
                         String responseMessage = jsonObject.getString("message");
                         // display the server's response
                         Toast.makeText(SignUp.this, responseMessage, Toast.LENGTH_SHORT).show();
-                        finish();
                     } catch (Exception e) {
                         Log.e("error", e.toString());
                         Toast.makeText(SignUp.this, "An error occurred !", Toast.LENGTH_SHORT).show();

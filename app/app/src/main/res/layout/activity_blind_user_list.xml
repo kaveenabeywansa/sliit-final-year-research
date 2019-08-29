@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     tools:context=".BlindUserList">
 
     <TextView
@@ -36,6 +37,7 @@
     <ListView
         android:id="@+id/blind_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingBottom="5dp" />
 
 </LinearLayout>
