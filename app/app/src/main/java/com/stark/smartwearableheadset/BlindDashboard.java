@@ -23,23 +23,12 @@ import com.stark.smartwearableheadset.services.BackgroundService;
 
 public class BlindDashboard extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
-    private Button button, btn_signout;
-    private TextView textView;
-    private LocationManager locationManager;
-    private String lattitude, longitude;
+    private Button btn_edit_profile, btn_change_pwd, btn_signout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blind_dashboard);
-
-        // print session details for ref purposes
-        SharedPreferences preferences;
-        preferences = getSharedPreferences("user_details", MODE_PRIVATE);
-        String Name = preferences.getString("user_name", "");
-        String Type = preferences.getString("user_type", "");
-        Log.i("Test", "User Name is " + Name);
-        Log.i("Test", "User Type is " + Type);
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
@@ -48,14 +37,21 @@ public class BlindDashboard extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), backgroundService.getClass());
         startService(intent);
 
-        textView = (TextView) findViewById(R.id.text_location);
-        button = (Button) findViewById(R.id.button_location);
+        btn_edit_profile = (Button) findViewById(R.id.btn_edit_profile);
+        btn_change_pwd = (Button) findViewById(R.id.btn_change_pwd);
         btn_signout = (Button) findViewById(R.id.btn_sign_out);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        // add listeners
+        btn_edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonClick();
+                editProfileClicked();
+            }
+        });
+        btn_change_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePwdClicked();
             }
         });
         btn_signout.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +60,13 @@ public class BlindDashboard extends AppCompatActivity {
                 signUserOut();
             }
         });
+
+        // set user name text view
+        SharedPreferences preferences;
+        preferences = getSharedPreferences("user_details", MODE_PRIVATE);
+        String Name = preferences.getString("user_name", "");
+        TextView dspName = (TextView) findViewById(R.id.user_fullname);
+        dspName.setText(Name);
     }
 
     @Override
@@ -73,80 +76,22 @@ public class BlindDashboard extends AppCompatActivity {
         stopService(intent);
     }
 
+    // edit profile
+    private void editProfileClicked() {
+        Intent intent = new Intent( BlindDashboard.this, EditProfile.class);
+        startActivity(intent);
+    }
+
+    // chaange user password
+    private void changePwdClicked() {
+        Intent intent = new Intent( BlindDashboard.this, ChangePassword.class);
+        startActivity(intent);
+    }
+
+    // sign user out
     private void signUserOut() {
-        finish();
-    }
-
-    private void buttonClick() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.i("Test", "01");
-            buildAlertMessageNoGps();
-
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.i("Test", "02");
-            getLocation();
-        }
-    }
-
-    private void getLocation() {
-        try {
-            Log.i("Test", "04");
-            Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Location location2 = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-
-            textView.setText("");
-            if (location1 != null) {
-                double latti = location1.getLatitude();
-                double longi = location1.getLongitude();
-                lattitude = String.valueOf(latti);
-                longitude = String.valueOf(longi);
-
-                textView.setText(textView.getText() + "\nYour current location 2 is" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
-            }
-            if (location != null) {
-                double latti = location.getLatitude();
-                double longi = location.getLongitude();
-                lattitude = String.valueOf(latti);
-                longitude = String.valueOf(longi);
-
-                textView.setText(textView.getText() + "\nYour current location 1 is" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
-            }
-            if (location2 != null) {
-                double latti = location2.getLatitude();
-                double longi = location2.getLongitude();
-                lattitude = String.valueOf(latti);
-                longitude = String.valueOf(longi);
-
-                textView.setText(textView.getText() + "\nYour current location 3 is" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
-            } else {
-                Toast.makeText(this, "Unble to Trace your location", Toast.LENGTH_SHORT).show();
-            }
-        } catch (SecurityException se) {
-            Log.e("Error", se.getMessage());
-        }
-    }
-
-    protected void buildAlertMessageNoGps() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Please Turn ON your GPS Connection")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

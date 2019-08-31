@@ -62,7 +62,8 @@
             android:layout_marginTop="5dp"
             android:background="@color/blue"
             android:text="Location History"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_health_history"
@@ -71,7 +72,8 @@
             android:layout_marginTop="5dp"
             android:background="@color/blue"
             android:text="Health History"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_return"

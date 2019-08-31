@@ -1,10 +1,12 @@
 package com.stark.smartwearableheadset;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class AssociateDashboard extends AppCompatActivity {
     private Button btn_edit_profile, btn_change_pwd, btn_monitor_users, btn_sign_out;
@@ -51,6 +53,13 @@ public class AssociateDashboard extends AppCompatActivity {
                 signoutClicked();
             }
         });
+
+        // set user name text view
+        SharedPreferences preferences;
+        preferences = getSharedPreferences("user_details", MODE_PRIVATE);
+        String Name = preferences.getString("user_name", "");
+        TextView dspName = (TextView) findViewById(R.id.user_fullname);
+        dspName.setText(Name);
     }
 
     // edit profile
@@ -61,6 +70,8 @@ public class AssociateDashboard extends AppCompatActivity {
 
     // chaange user password
     private void changePwdClicked() {
+        Intent intent = new Intent( AssociateDashboard.this, ChangePassword.class);
+        startActivity(intent);
     }
 
     // go to user list page
@@ -71,5 +82,8 @@ public class AssociateDashboard extends AppCompatActivity {
 
     // sign user out. remove sessions
     private void signoutClicked() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
