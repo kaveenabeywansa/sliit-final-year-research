@@ -52,7 +52,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@color/blue"
-            android:text="Track Health"
+            android:text="Track Body vitals"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_track_stress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/blue"
+            android:text="Track Stress Level"
             android:textColor="@color/white" />
 
         <Button

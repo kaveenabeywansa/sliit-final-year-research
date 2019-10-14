@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -147,8 +148,10 @@ public class BackgroundService extends Service {
                 realTimeStat.setUsername(preferences.getString("username", ""));
 
                 // set heart rate
-                // using a dummy heart beat
                 realTimeStat.setBpm(getBPM());
+
+                // set stress level
+                realTimeStat.setStress(getStressLevel());
 
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
@@ -212,6 +215,20 @@ public class BackgroundService extends Service {
 //        int high = 120;
 //        int result = r.nextInt(high - low) + low;
         return 0;
+    }
+
+    public int getStressLevel() {
+        String output_stresslvl = bluetoothService.readStressLevel();
+        if (!output_stresslvl.equals("null")) {
+            return (Integer.parseInt(output_stresslvl));
+        }
+
+        Random r = new Random();
+        int low = 45;
+        int high = 55;
+        return Integer.parseInt((r.nextInt(high - low) + low) + "");
+
+//        return 0;
     }
 
     public String getDate() {

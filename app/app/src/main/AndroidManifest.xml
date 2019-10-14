@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ChangePassword"></activity>
+        <activity android:name=".activities.TrackStress"></activity>
+        <activity android:name=".activities.ChangePassword" />
         <activity android:name=".activities.EditProfile" />
         <activity android:name=".activities.Signup2" />
         <activity android:name=".activities.SignUp" />
