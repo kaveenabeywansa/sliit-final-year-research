@@ -21,7 +21,8 @@ var Controller = function () {
                 statistics: {
                     date: null,
                     time: null,
-                    bpm: null,
+                    bpm: 0,
+                    stress: 0,
                     location: {
                         latitude: null,
                         longitude: null
