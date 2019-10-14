@@ -1,13 +1,9 @@
-package com.stark.smartwearableheadset;
+package com.stark.smartwearableheadset.activities;
 
-import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.stark.smartwearableheadset.R;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.StatsService;
 

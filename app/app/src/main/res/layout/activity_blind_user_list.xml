@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    tools:context=".BlindUserList">
+    tools:context=".activities.BlindUserList">
 
     <TextView
         android:layout_width="match_parent"

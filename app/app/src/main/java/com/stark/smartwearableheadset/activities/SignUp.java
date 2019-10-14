@@ -1,30 +1,22 @@
-package com.stark.smartwearableheadset;
+package com.stark.smartwearableheadset.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.stark.smartwearableheadset.adapters.AssociateListAdapter;
-import com.stark.smartwearableheadset.adapters.BlindUserListAdapter;
-import com.stark.smartwearableheadset.models.BlindUser;
+import com.stark.smartwearableheadset.R;
 import com.stark.smartwearableheadset.models.User;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.UserService;
 
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
