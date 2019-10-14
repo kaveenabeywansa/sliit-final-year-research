@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserService {
@@ -32,4 +33,13 @@ public interface UserService {
 
     @POST("users/")
     Call<ResponseBody> registerNewUser(@Body User user);
+
+    @POST("users/pwd/{id}")
+    Call<ResponseBody> changePassword(@Path("id") String username, @Body LoginCredentials credentials);
+
+    @GET("users/{id}/")
+    Call<ResponseBody> getUserData(@Path("id") String username);
+
+    @PUT("users/{id}")
+    Call<ResponseBody> editUserProfile(@Path("id") String username, @Body BlindUser user);
 }
