@@ -14,6 +14,7 @@ var Controller = function () {
                         date: data.date,
                         time: data.time,
                         bpm: data.bpm,
+                        stress: data.stress,
                         location: {
                             latitude: data.latitude,
                             longitude: data.longitude

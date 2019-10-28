@@ -20,6 +20,7 @@ const RealTimeStats = new Schema({
         date: String,
         time: String,
         bpm: Number,
+        stress: Number,
         location: {
             latitude: Number,
             longitude: Number
