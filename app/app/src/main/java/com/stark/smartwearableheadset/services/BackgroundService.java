@@ -220,15 +220,16 @@ public class BackgroundService extends Service {
     public int getStressLevel() {
         String output_stresslvl = bluetoothService.readStressLevel();
         if (!output_stresslvl.equals("null")) {
-            return (Integer.parseInt(output_stresslvl));
+            float temp = Float.parseFloat(output_stresslvl);
+            return (Math.round(temp));
         }
 
-        Random r = new Random();
-        int low = 45;
-        int high = 55;
-        return Integer.parseInt((r.nextInt(high - low) + low) + "");
+//        Random r = new Random();
+//        int low = 45;
+//        int high = 55;
+//        return Integer.parseInt((r.nextInt(high - low) + low) + "");
 
-//        return 0;
+        return 0;
     }
 
     public String getDate() {

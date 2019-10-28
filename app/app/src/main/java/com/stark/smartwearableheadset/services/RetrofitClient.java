@@ -7,7 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit = null;
-        private static String baseUrl = "http://35.224.75.243/"; // cloud hosted ip
+
+    private static String baseUrl = "http://34.69.14.141/"; // new cloud hosted ip
+//        private static String baseUrl = "http://35.224.75.243/"; // old cloud hosted ip
 //        private static String baseUrl = "http://192.168.43.223/"; // testing at mobile
 //    private static String baseUrl = "http://192.168.1.102/"; // testing at home
 
