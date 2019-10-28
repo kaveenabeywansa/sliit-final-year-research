@@ -1,4 +1,4 @@
-package com.stark.smartwearableheadset;
+package com.stark.smartwearableheadset.activities;
 
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.stark.smartwearableheadset.R;
 import com.stark.smartwearableheadset.models.BlindUser;
-import com.stark.smartwearableheadset.models.LoginCredentials;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.UserService;
 

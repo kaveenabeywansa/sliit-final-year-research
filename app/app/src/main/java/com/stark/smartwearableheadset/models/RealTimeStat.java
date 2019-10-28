@@ -5,6 +5,7 @@ public class RealTimeStat {
     private String date;
     private String time;
     private int bpm;
+    private int stress;
     private double latitude;
     private double longitude;
 
@@ -40,6 +41,14 @@ public class RealTimeStat {
         this.bpm = bpm;
     }
 
+    public int getStress() {
+        return stress;
+    }
+
+    public void setStress(int stress) {
+        this.stress = stress;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -57,6 +66,6 @@ public class RealTimeStat {
     }
 
     public boolean isValidObject() {
-        return (username != null && date != null && time != null && bpm >= 0);
+        return (username != null && date != null && time != null && bpm >= 0 && stress >=0);
     }
 }

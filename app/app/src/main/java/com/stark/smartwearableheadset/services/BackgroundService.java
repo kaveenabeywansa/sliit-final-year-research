@@ -1,26 +1,20 @@
 package com.stark.smartwearableheadset.services;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.stark.smartwearableheadset.MainActivity;
 import com.stark.smartwearableheadset.models.RealTimeStat;
 
 import org.json.JSONObject;
@@ -154,8 +148,10 @@ public class BackgroundService extends Service {
                 realTimeStat.setUsername(preferences.getString("username", ""));
 
                 // set heart rate
-                // using a dummy heart beat
                 realTimeStat.setBpm(getBPM());
+
+                // set stress level
+                realTimeStat.setStress(getStressLevel());
 
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
@@ -218,6 +214,21 @@ public class BackgroundService extends Service {
 //        int low = 40;
 //        int high = 120;
 //        int result = r.nextInt(high - low) + low;
+        return 0;
+    }
+
+    public int getStressLevel() {
+        String output_stresslvl = bluetoothService.readStressLevel();
+        if (!output_stresslvl.equals("null")) {
+            float temp = Float.parseFloat(output_stresslvl);
+            return (Math.round(temp));
+        }
+
+//        Random r = new Random();
+//        int low = 45;
+//        int high = 55;
+//        return Integer.parseInt((r.nextInt(high - low) + low) + "");
+
         return 0;
     }
 

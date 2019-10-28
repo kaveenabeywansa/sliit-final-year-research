@@ -83,4 +83,24 @@ public class BluetoothService {
         }
         return user_bpm;
     }
+
+    public String readStressLevel() {
+        String stressLevel = "null";
+        try {
+            if (btSocket != null) {
+                String cmd = "s";
+                btSocket.getOutputStream().write(cmd.toString().getBytes());
+                InputStream socketInputStream = btSocket.getInputStream();
+                byte[] buffer = new byte[256];
+                int bytes;
+                bytes = socketInputStream.read(buffer);            //read bytes from input buffer
+                String readMessage = new String(buffer, 0, bytes);
+                stressLevel = readMessage;
+                Log.i("Test", "Stress Level: " + readMessage);
+            }
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
+        }
+        return stressLevel;
+    }
 }

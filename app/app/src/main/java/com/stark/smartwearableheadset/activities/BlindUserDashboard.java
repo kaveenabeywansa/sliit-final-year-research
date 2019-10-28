@@ -1,4 +1,4 @@
-package com.stark.smartwearableheadset;
+package com.stark.smartwearableheadset.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stark.smartwearableheadset.R;
 import com.stark.smartwearableheadset.models.BlindUser;
 import com.stark.smartwearableheadset.services.RetrofitClient;
 import com.stark.smartwearableheadset.services.UserService;
@@ -25,7 +26,7 @@ public class BlindUserDashboard extends AppCompatActivity {
     private UserService userService;
     SharedPreferences preferences;
     private TextView txt_user_name, txt_user_phone;
-    private Button btn_track_location, btn_track_health, btn_location_history, btn_health_history, btn_return;
+    private Button btn_track_location, btn_track_health, btn_track_stress, btn_location_history, btn_health_history, btn_return;
     private String blind_username;
 
     @Override
@@ -40,6 +41,7 @@ public class BlindUserDashboard extends AppCompatActivity {
         txt_user_phone = (TextView) findViewById(R.id.user_phone);
         btn_track_location = (Button) findViewById(R.id.btn_track_location);
         btn_track_health = (Button) findViewById(R.id.btn_track_health);
+        btn_track_stress = (Button) findViewById(R.id.btn_track_stress);
         btn_location_history = (Button) findViewById(R.id.btn_location_history);
         btn_health_history = (Button) findViewById(R.id.btn_health_history);
         btn_return = (Button) findViewById(R.id.btn_return);
@@ -55,6 +57,12 @@ public class BlindUserDashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trackHealth();
+            }
+        });
+        btn_track_stress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                trackStress();
             }
         });
         btn_location_history.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +107,12 @@ public class BlindUserDashboard extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void trackStress() {
+        Intent intent = new Intent(BlindUserDashboard.this, TrackStress.class);
+        intent.putExtra("blind_user_id", blind_username);
+        startActivity(intent);
+    }
+
     // open selected user's location history
     private void locationHistory() {
     }
@@ -134,6 +148,7 @@ public class BlindUserDashboard extends AppCompatActivity {
         });
     }
 
+    // make a phone call
     private void triggerCallUserInternt() {
         final String phone_number = txt_user_phone.getText().toString();
         String user_name = txt_user_name.getText().toString();

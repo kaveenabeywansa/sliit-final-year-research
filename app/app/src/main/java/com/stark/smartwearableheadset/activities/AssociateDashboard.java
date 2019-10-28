@@ -1,45 +1,31 @@
-package com.stark.smartwearableheadset;
+package com.stark.smartwearableheadset.activities;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.stark.smartwearableheadset.services.BackgroundService;
+import com.stark.smartwearableheadset.R;
 
-public class BlindDashboard extends AppCompatActivity {
-    private static final int REQUEST_LOCATION = 1;
-    private Button btn_edit_profile, btn_change_pwd, btn_signout;
+public class AssociateDashboard extends AppCompatActivity {
+    private Button btn_edit_profile, btn_change_pwd, btn_monitor_users, btn_sign_out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blind_dashboard);
+        setContentView(R.layout.activity_associate_dashboard);
 
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        // This page will list all blind people who are connected
+        // When clicked on the corresponding, will direct to the specific options activity
 
-//        // background service // move this to dashboard later
-        BackgroundService backgroundService = new BackgroundService();
-        Intent intent = new Intent(getApplicationContext(), backgroundService.getClass());
-        startService(intent);
-
+        // init
         btn_edit_profile = (Button) findViewById(R.id.btn_edit_profile);
         btn_change_pwd = (Button) findViewById(R.id.btn_change_pwd);
-        btn_signout = (Button) findViewById(R.id.btn_sign_out);
+        btn_monitor_users = (Button) findViewById(R.id.btn_monitor_users);
+        btn_sign_out = (Button) findViewById(R.id.btn_sign_out);
 
         // add listeners
         btn_edit_profile.setOnClickListener(new View.OnClickListener() {
@@ -48,16 +34,25 @@ public class BlindDashboard extends AppCompatActivity {
                 editProfileClicked();
             }
         });
+
         btn_change_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changePwdClicked();
             }
         });
-        btn_signout.setOnClickListener(new View.OnClickListener() {
+
+        btn_monitor_users.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUserOut();
+                monitorUsersClicked();
+            }
+        });
+
+        btn_sign_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signoutClicked();
             }
         });
 
@@ -69,27 +64,26 @@ public class BlindDashboard extends AppCompatActivity {
         dspName.setText(Name);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(BlindDashboard.this, BackgroundService.class);
-        stopService(intent);
-    }
-
     // edit profile
     private void editProfileClicked() {
-        Intent intent = new Intent( BlindDashboard.this, EditProfile.class);
+        Intent intent = new Intent( AssociateDashboard.this, EditProfile.class);
         startActivity(intent);
     }
 
     // chaange user password
     private void changePwdClicked() {
-        Intent intent = new Intent( BlindDashboard.this, ChangePassword.class);
+        Intent intent = new Intent( AssociateDashboard.this, ChangePassword.class);
         startActivity(intent);
     }
 
-    // sign user out
-    private void signUserOut() {
+    // go to user list page
+    private void monitorUsersClicked() {
+        Intent intent = new Intent(AssociateDashboard.this, BlindUserList.class);
+        startActivity(intent);
+    }
+
+    // sign user out. remove sessions
+    private void signoutClicked() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
